@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import ValorantClientAPI from '../util/ValorantClientAPI';
 import './Login.css';
 
 function Login(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [region, setRegion] = useState('NA');
-  console.log(`rendering ${username} ${password} ${region}`);
+  // console.log(`rendering ${username} ${password} ${region}`);
 
-  function handleSubmit() {
+  // const [set]
 
+  async function handleSubmit() {
+    console.log(await ValorantClientAPI.login(username, password, region));
   }
 
   return (
