@@ -1,0 +1,16 @@
+.login-container {
+    /* max-width: 300px; */
+}
+
+.inputRegion {
+    width: 100px;
+}
+
+div.select {
+    width: 80px;
+    display: block;
+}
+
+select {
+    width: 100%;
+}
