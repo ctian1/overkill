@@ -1,9 +1,11 @@
+import util from 'util';
+
 const { net, session } = window.require('electron').remote;
 
-class ValorantClientAPI {
-  static async request(ses, method, url, headers, data) {
+class ValorantAPI {
+  static async request(key, method, url, headers, data) {
     return new Promise((res, rej) => {
-      const dataString = JSON.stringify(data);
+      const ses = session.fromPartition(key);
       const newHeaders = { 'Content-Type': 'application/json', ...headers };
       const req = net.request({
         method,
@@ -23,15 +25,18 @@ class ValorantClientAPI {
           res(result);
         });
 
-        response.on('data', (chunk) => {
-          body += chunk.toString();
-        });
-
         response.on('error', (error) => {
           rej(error);
         });
+
+        response.on('data', (chunk) => {
+          body += chunk.toString();
+        });
       });
-      req.write(dataString);
+      if (data) {
+        const dataString = JSON.stringify(data);
+        req.write(dataString);
+      }
       req.end();
     });
   }
@@ -45,16 +50,17 @@ class ValorantClientAPI {
       scope: 'account openid',
     };
 
-    const ses = session.fromPartition(`${region}#${username}`);
+    const key = `${region}#${username}`;
+    const ses = session.fromPartition(key);
     ses.clearStorageData();
-    const result = await this.request(ses, 'POST', 'https://auth.riotgames.com/api/v1/authorization', {}, data);
+    const result = await this.request(key, 'POST', this.URLS.auth, {}, data);
     if (result.data.type === 'auth') {
       const data2 = {
         type: 'auth',
         username,
         password,
       };
-      const result2 = await this.request(ses, 'PUT', 'https://auth.riotgames.com/api/v1/authorization', {}, data2);
+      const result2 = await this.request(key, 'PUT', this.URLS.auth, {}, data2);
       const urlRegex = /access_token=((?:[a-zA-Z]|\d|\.|-|_)*).*id_token=((?:[a-zA-Z]|\d|\.|-|_)*).*expires_in=(\d*)/;
 
       const reMatch = result2.data.response.parameters.uri.match(urlRegex);
@@ -65,13 +71,15 @@ class ValorantClientAPI {
       const authHeaders = {
         Authorization: `Bearer ${accessToken}`,
       };
-      const result3 = await this.request(ses, 'POST', 'https://entitlements.auth.riotgames.com/api/token/v1', authHeaders, {});
+      const result3 = await this.request(key, 'POST', this.URLS.entitlements, authHeaders, {});
       const entitlementsToken = result3.data.entitlements_token;
 
       authHeaders['X-Riot-Entitlements-JWT'] = entitlementsToken;
 
-      const result4 = await this.request(ses, 'POST', 'https://auth.riotgames.com/userinfo', authHeaders, {});
+      const result4 = await this.request(key, 'POST', this.URLS.userinfo, authHeaders, {});
       return {
+        username,
+        region,
         accessToken,
         idToken,
         expiresIn,
@@ -81,6 +89,19 @@ class ValorantClientAPI {
     }
     throw new Error();
   }
+
+  static url(name, ...args) {
+    return util.format(this.URLS[name], ...args);
+  }
 }
 
-export default ValorantClientAPI;
+ValorantAPI.URLS = {
+  auth: 'https://auth.riotgames.com/api/v1/authorization',
+  entitlements: 'https://entitlements.auth.riotgames.com/api/token/v1',
+  userinfo: 'https://auth.riotgames.com/userinfo',
+  storefront: 'https://pd.%s.a.pvp.net/store/v2/storefront/%s',
+};
+
+window.val = ValorantAPI;
+
+export default ValorantAPI;

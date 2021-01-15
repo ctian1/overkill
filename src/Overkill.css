@@ -29,4 +29,13 @@ html, body, #root, div.window {
 
 .main-screen {
   margin: auto;
+  height: 100%;
+}
+
+.main-screen > .columns {
+  min-width: 600px;
+}
+
+.button.logout {
+  float: right;
 }

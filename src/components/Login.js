@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
-import ValorantClientAPI from '../util/ValorantClientAPI';
+import PropTypes from 'prop-types';
+import ValorantAPI from '../util/ValorantAPI';
 import './Login.css';
 
 function Login(props) {
+  const { setUser } = props;
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [region, setRegion] = useState('NA');
+  const [submitting, setSubmitting] = useState(false);
   // console.log(`rendering ${username} ${password} ${region}`);
 
   // const [set]
 
   async function handleSubmit() {
-    console.log(await ValorantClientAPI.login(username, password, region));
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
+    const user = await ValorantAPI.login(username, password, region);
+    console.log('setting user', user);
+    setUser(user);
+    setSubmitting(false);
   }
 
   return (
@@ -19,7 +30,7 @@ function Login(props) {
       <div className="field">
         <label htmlFor="inputUsername" className="label">
           Username
-          <input type="text" className="input" onChange={(e) => setUsername(e.currentTarget.value)} id="inputUsername" />
+          <input type="text" className="input" value={username} onChange={(e) => setUsername(e.currentTarget.value)} id="inputUsername" />
 
         </label>
       </div>
@@ -49,5 +60,9 @@ function Login(props) {
     </div>
   );
 }
+
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};
 
 export default Login;
