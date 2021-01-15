@@ -3,7 +3,7 @@ import util from 'util';
 const { net, session } = window.require('electron').remote;
 
 class ValorantAPI {
-  static async request(key, method, url, headers, data) {
+  static request(key, method, url, headers, data) {
     return new Promise((res, rej) => {
       const ses = session.fromPartition(key);
       const newHeaders = { 'Content-Type': 'application/json', ...headers };
@@ -63,20 +63,25 @@ class ValorantAPI {
       const result2 = await this.request(key, 'PUT', this.URLS.auth, {}, data2);
       const urlRegex = /access_token=((?:[a-zA-Z]|\d|\.|-|_)*).*id_token=((?:[a-zA-Z]|\d|\.|-|_)*).*expires_in=(\d*)/;
 
+      if (result2.data.response === undefined) {
+        throw Error('Login failed');
+      }
       const reMatch = result2.data.response.parameters.uri.match(urlRegex);
       const accessToken = reMatch[1];
       const idToken = reMatch[2];
-      const expiresIn = reMatch[3];
+      const expiresIn = parseInt(reMatch[3], 10);
 
       const authHeaders = {
         Authorization: `Bearer ${accessToken}`,
       };
-      const result3 = await this.request(key, 'POST', this.URLS.entitlements, authHeaders, {});
+      const result3 = await this.request(key, 'POST', this.url('entitlements'), authHeaders, {});
       const entitlementsToken = result3.data.entitlements_token;
 
       authHeaders['X-Riot-Entitlements-JWT'] = entitlementsToken;
 
-      const result4 = await this.request(key, 'POST', this.URLS.userinfo, authHeaders, {});
+      await this.loadOffers(key, region, authHeaders);
+
+      const result4 = await this.request(key, 'POST', this.url('userinfo'), authHeaders, {});
       return {
         username,
         region,
@@ -90,17 +95,55 @@ class ValorantAPI {
     throw new Error();
   }
 
+  static async loadNames() {
+    if (ValorantAPI.names === null) {
+      const res = await this.request('', 'GET', this.url('weapons'), {}, {});
+      ValorantAPI.names = {};
+      res.data.data.forEach((weapon) => {
+        if (weapon.skins !== null) {
+          weapon.skins.forEach((skin) => {
+            ValorantAPI.names[skin.uuid] = skin.displayName;
+            if (skin.levels !== null) {
+              ValorantAPI.names[skin.levels[0].uuid] = skin.displayName;
+            }
+          });
+        }
+      });
+    }
+  }
+
+  static async loadOffers(key, region, authHeaders) {
+    if (ValorantAPI.prices === null) {
+      const res = await this.request(key, 'GET', this.url('offers', region), authHeaders, {});
+      ValorantAPI.prices = {};
+      console.log(res.data);
+      res.data.Offers.forEach((offer) => {
+        if (offer.Cost['85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741'] !== null) {
+          ValorantAPI.prices[offer.OfferID.toLowerCase()] = offer.Cost['85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741'];
+        }
+      });
+      console.log(ValorantAPI.prices);
+    }
+  }
+
   static url(name, ...args) {
     return util.format(this.URLS[name], ...args);
   }
 }
 
+ValorantAPI.BASE_URL = 'https://pd.%s.a.pvp.net';
+
 ValorantAPI.URLS = {
   auth: 'https://auth.riotgames.com/api/v1/authorization',
   entitlements: 'https://entitlements.auth.riotgames.com/api/token/v1',
   userinfo: 'https://auth.riotgames.com/userinfo',
-  storefront: 'https://pd.%s.a.pvp.net/store/v2/storefront/%s',
+  storefront: `${ValorantAPI.BASE_URL}/store/v2/storefront/%s`,
+  weapons: 'https://valorant-api.com/v1/weapons',
+  offers: `${ValorantAPI.BASE_URL}/store/v1/offers`,
 };
+
+ValorantAPI.names = null;
+ValorantAPI.prices = null;
 
 window.val = ValorantAPI;
 

@@ -1,0 +1,21 @@
+.item.card {
+    margin: 8px;
+}
+
+.item.card-content {
+    padding: 1rem;
+}
+
+.item.card-image {
+    height: 100px;
+    display: flex;
+}
+
+.skin-icon {
+    align-self: center;
+    padding: 2px;
+}
+
+.item.title, .item.price {
+    text-align: center;
+}

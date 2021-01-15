@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Login from './components/Login';
 // import logo from './logo.svg';
 import './Overkill.css';
 import 'bulma/css/bulma.css';
 import Store from './components/Store';
+import ValorantAPI from './util/ValorantAPI';
 
 function Overkill() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   console.log('user', user);
+
+  useEffect(() => {
+    ValorantAPI.loadNames();
+  }, []);
 
   return (
     <div className="window">
@@ -18,9 +23,7 @@ function Overkill() {
             <div className="column">
               <h1 className="title is-3">Overkill</h1>
               {user === null ? <Login setUser={setUser} /> : (
-                <div>
-                  <Store user={user} />
-                </div>
+                ''
               )}
             </div>
             <div className="column">
@@ -28,7 +31,11 @@ function Overkill() {
 
             </div>
           </div>
-
+          { user != null ? (
+            <div className="store-container">
+              <Store user={user} />
+            </div>
+          ) : ''}
         </div>
       </div>
 

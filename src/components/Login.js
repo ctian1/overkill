@@ -10,27 +10,35 @@ function Login(props) {
   const [password, setPassword] = useState('');
   const [region, setRegion] = useState('NA');
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
   // console.log(`rendering ${username} ${password} ${region}`);
 
   // const [set]
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError('');
     if (submitting) {
       return;
     }
     setSubmitting(true);
-    const user = await ValorantAPI.login(username, password, region);
-    console.log('setting user', user);
-    setUser(user);
+    try {
+      const user = await ValorantAPI.login(username, password, region);
+      console.log('setting user', user);
+      setUser(user);
+    } catch (e) {
+      console.log(e);
+      setError('Username or password is incorrect');
+    }
     setSubmitting(false);
   }
 
   return (
-    <div className="login-container">
+    <form className="login-container" onSubmit={handleSubmit}>
       <div className="field">
         <label htmlFor="inputUsername" className="label">
           Username
-          <input type="text" className="input" value={username} required onChange={(e) => setUsername(e.currentTarget.value)} id="inputUsername" />
+          <input type="text" className={`input${error !== '' ? ' is-danger' : ''}`} value={username} required onChange={(e) => setUsername(e.currentTarget.value)} id="inputUsername" />
 
         </label>
       </div>
@@ -38,7 +46,8 @@ function Login(props) {
       <div className="field">
         <label htmlFor="inputPassword" className="label">
           Password
-          <input type="password" className="input" value={password} required onChange={(e) => setPassword(e.currentTarget.value)} id="inputPassword" />
+          <input type="password" className={`input${error !== '' ? ' is-danger' : ''}`} value={password} required onChange={(e) => setPassword(e.currentTarget.value)} id="inputPassword" />
+          <p className="help is-danger">{error}</p>
         </label>
       </div>
 
@@ -57,7 +66,7 @@ function Login(props) {
       <div className="control">
         <button type="submit" onClick={handleSubmit} className={`button is-primary${submitting ? ' is-loading' : ''}`}>Login</button>
       </div>
-    </div>
+    </form>
   );
 }
 

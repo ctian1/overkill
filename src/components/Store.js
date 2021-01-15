@@ -1,16 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ValorantAPI from '../util/ValorantAPI';
 import Item from './Item';
+import './Store.css';
 
 function Store(props) {
   const { user } = props;
   const [loading, setLoading] = useState(true);
   const [bundle, setBundle] = useState(null);
   const [items, setItems] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(null);
+  const timer = useRef(null);
 
   useEffect(() => {
     const key = `${user.region}#${user.username}`;
+
+    function subtractTime() {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer.current);
+          timer.current = null;
+        }
+        return prev - 1;
+      });
+    }
 
     function parseData(data) {
       setBundle({
@@ -18,6 +31,9 @@ function Store(props) {
         items: data.FeaturedBundle.Items,
       });
       setItems(data.SkinsPanelLayout.SingleItemOffers);
+      setTimeLeft(data.SkinsPanelLayout.SingleItemOffersRemainingDurationInSeconds);
+
+      timer.current = setInterval(subtractTime, 1000);
     }
 
     async function getShop() {
@@ -32,13 +48,32 @@ function Store(props) {
       setLoading(false);
     }
     getShop();
+    return () => {
+      if (timer.current !== undefined && timer.current !== null) {
+        clearInterval(timer.current);
+      }
+    };
   }, []);
+
+  function parseTime(seconds) {
+    return new Date(seconds * 1000).toISOString().substr(11, 8);
+  }
 
   return (
     <div>
-      { loading ? <div>Loading</div> : (
-        items.map((item) => <Item id={item} />)
-      )}
+      { loading ? <div>Loading</div>
+        : (
+          <div>
+            <div className="store time-left">
+              {parseTime(timeLeft)}
+            </div>
+            {/* <div><img src={`https://media.valorant-api.com/bundles/${bundle.id}/displayicon.png`} /></div> */}
+            <div className="columns">
+              {items.map((item) => <Item key={item} id={item} />)}
+            </div>
+
+          </div>
+        )}
     </div>
   );
 }
