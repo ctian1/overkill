@@ -30,7 +30,7 @@ function Login(props) {
       <div className="field">
         <label htmlFor="inputUsername" className="label">
           Username
-          <input type="text" className="input" value={username} onChange={(e) => setUsername(e.currentTarget.value)} id="inputUsername" />
+          <input type="text" className="input" value={username} required onChange={(e) => setUsername(e.currentTarget.value)} id="inputUsername" />
 
         </label>
       </div>
@@ -38,14 +38,14 @@ function Login(props) {
       <div className="field">
         <label htmlFor="inputPassword" className="label">
           Password
-          <input type="password" className="input" onChange={(e) => setPassword(e.currentTarget.value)} id="inputPassword" />
+          <input type="password" className="input" value={password} required onChange={(e) => setPassword(e.currentTarget.value)} id="inputPassword" />
         </label>
       </div>
 
       <label htmlFor="inputRegion" className="label">
         Region
         <div className="select">
-          <select id="inputRegion" onChange={(e) => setRegion(e.currentTarget.value)}>
+          <select id="inputRegion" value={region} onChange={(e) => setRegion(e.currentTarget.value)}>
             <option>NA</option>
             <option>EU</option>
             <option>AP</option>
@@ -55,7 +55,7 @@ function Login(props) {
       </label>
 
       <div className="control">
-        <button type="submit" onClick={handleSubmit} className="button is-primary">Login</button>
+        <button type="submit" onClick={handleSubmit} className={`button is-primary${submitting ? ' is-loading' : ''}`}>Login</button>
       </div>
     </div>
   );
