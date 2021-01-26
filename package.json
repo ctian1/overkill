@@ -1,5 +1,6 @@
 {
   "name": "overkill",
+  "productName": "overkill",
   "description": "desktop app for checking VALORANT shop",
   "version": "0.1.0",
   "main": "public/electron.js",
@@ -69,7 +70,8 @@
     "forge": {
       "packagerConfig": {
         "icon": "src/icons/mac/icon.icns",
-        "name": "Overkill"
+        "name": "overkill",
+        "executableName": "overkill"
       },
       "makers": [
         {
