@@ -1,8 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Accounts.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loader from './Loader';
 import ValorantAPI from '../util/ValorantAPI';
 
@@ -41,12 +39,10 @@ function Accounts(props) {
     accountStorage.map((_, idx) => (
       activeBlock === idx
         ? (
-          <button type="button" className="button is-link is-outlined is-danger is-small" onClick={() => removeAccount(idx)}>
-            <FontAwesomeIcon icon={faTimes} size="xs" />
-          </button>
+          <a type="button" className="delete remove-account" onClick={() => removeAccount(idx)} />
         ) : ''
     ))
-  ), [accountStorage, activeBlock]);
+  ), [accountStorage, activeBlock, removeAccount]);
 
   const accountBlocks = useMemo(() => (
     accountStorage.map((account, idx) => (
@@ -68,7 +64,7 @@ function Accounts(props) {
         {removeButtons[idx]}
       </div>
     ))
-  ), [accountStorage, removeButtons]);
+  ), [accountStorage, removeButtons, handleBlockClick]);
 
   return (
     <div className="accounts-container">

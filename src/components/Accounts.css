@@ -20,3 +20,11 @@
     padding-top: 2em;
     padding-bottom: 2em;
 }
+
+a.delete.remove-account {
+    background-color: #f14668;
+}
+
+a.delete.remove-account:hover {
+    background-color: #f03a5f !important;
+}
