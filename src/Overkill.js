@@ -22,15 +22,14 @@ function Overkill() {
           <div className="columns">
             <div className="column">
               <h1 className="title is-3">Overkill</h1>
-              {user === null ? <Login setUser={setUser} /> : (
-                ''
-              )}
             </div>
             <div className="column">
               { user != null ? <button type="button" onClick={() => setUser(null)} className="button is-danger is-light logout">Log out</button> : '' }
-
             </div>
           </div>
+          {user === null ? <Login setUser={setUser} /> : (
+            ''
+          )}
           { user != null ? (
             <div className="store-container">
               <Store user={user} />

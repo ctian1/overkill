@@ -1,0 +1,22 @@
+.accounts-container {
+    text-align: right;
+}
+
+.accounts-container .panel-block {
+    justify-content:  space-between;
+}
+
+.panel-block.is-button {
+    height: 46px;
+    cursor: pointer;
+}
+
+.panel-block.is-button:hover {
+    background-color: whitesmoke;
+}
+
+.panel-block.is-loading {
+    justify-content: center;
+    padding-top: 2em;
+    padding-bottom: 2em;
+}

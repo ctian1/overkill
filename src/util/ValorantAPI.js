@@ -104,7 +104,9 @@ class ValorantAPI {
           weapon.skins.forEach((skin) => {
             ValorantAPI.names[skin.uuid] = skin.displayName;
             if (skin.levels !== null) {
-              ValorantAPI.names[skin.levels[0].uuid] = skin.displayName;
+              if (skin.levels[0] != null) {
+                ValorantAPI.names[skin.levels[0].uuid] = skin.displayName;
+              }
             }
           });
         }
