@@ -21,10 +21,10 @@
     padding-bottom: 2em;
 }
 
-a.delete.remove-account {
+button.delete.remove-account {
     background-color: #f14668;
 }
 
-a.delete.remove-account:hover {
+button.delete.remove-account:hover {
     background-color: #f03a5f !important;
 }

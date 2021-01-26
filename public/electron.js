@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable global-require */
 /* eslint-disable no-param-reassign */
 const path = require('path');
 

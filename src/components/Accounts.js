@@ -12,8 +12,6 @@ function Accounts(props) {
   const removeAccount = (idx) => {
     const newAccountStorage = accountStorage.slice();
     newAccountStorage.splice(idx, 1);
-    console.log(newAccountStorage);
-    console.log('removing', idx);
     setAccountStorage(newAccountStorage);
   };
 
@@ -30,7 +28,6 @@ function Accounts(props) {
       const user = await ValorantAPI.login(username, password, region);
       setUser(user);
     } catch (err) {
-      console.log(err);
       setLoading(false);
     }
   }
@@ -39,7 +36,7 @@ function Accounts(props) {
     accountStorage.map((_, idx) => (
       activeBlock === idx
         ? (
-          <a type="button" className="delete remove-account" onClick={() => removeAccount(idx)} />
+          <button type="button" className="delete remove-account" onClick={() => removeAccount(idx)}>delete</button>
         ) : ''
     ))
   ), [accountStorage, activeBlock, removeAccount]);

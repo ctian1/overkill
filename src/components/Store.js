@@ -7,7 +7,7 @@ import './Store.css';
 function Store(props) {
   const { user } = props;
   const [loading, setLoading] = useState(true);
-  const [bundle, setBundle] = useState(null);
+  const [, setBundle] = useState(null);
   const [items, setItems] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
   const timer = useRef(null);

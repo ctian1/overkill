@@ -26,13 +26,11 @@ function Login(props) {
     setSubmitting(true);
     try {
       const user = await ValorantAPI.login(username, password, region);
-      console.log('setting user', user);
       if (savePass) {
         setAccountStorage([...accountStorage, [username, password, region]]);
       }
       setUser(user);
     } catch (err) {
-      console.log(err);
       setError('Username or password is incorrect');
       setSubmitting(false);
     }
