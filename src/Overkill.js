@@ -8,7 +8,6 @@ import ValorantAPI from './util/ValorantAPI';
 
 function Overkill() {
   const [user, setUser] = useState(null);
-  console.log('user', user);
 
   useEffect(() => {
     ValorantAPI.loadNames();

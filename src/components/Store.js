@@ -43,7 +43,6 @@ function Store(props) {
       };
 
       const res = await ValorantAPI.request(key, 'GET', ValorantAPI.url('storefront', user.region, user.userId), authHeaders);
-      console.log('loaded shop', res.data);
       parseData(res.data);
       setLoading(false);
     }
@@ -53,7 +52,7 @@ function Store(props) {
         clearInterval(timer.current);
       }
     };
-  }, []);
+  }, [user.accessToken, user.entitlementsToken, user.region, user.userId, user.username]);
 
   function parseTime(seconds) {
     return new Date(seconds * 1000).toISOString().substr(11, 8);

@@ -9,40 +9,38 @@ function Accounts(props) {
   const [activeBlock, setActiveBlock] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const removeAccount = (idx) => {
-    const newAccountStorage = accountStorage.slice();
-    newAccountStorage.splice(idx, 1);
-    setAccountStorage(newAccountStorage);
-  };
-
-  async function handleBlockClick(e, idx) {
-    if (e.target !== e.currentTarget) {
-      return;
-    }
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    try {
-      const [username, password, region] = accountStorage[idx];
-      const user = await ValorantAPI.login(username, password, region);
-      setUser(user);
-    } catch (err) {
-      setLoading(false);
-    }
-  }
-
-  const removeButtons = useMemo(() => (
-    accountStorage.map((_, idx) => (
+  const removeButtons = useMemo(() => {
+    const removeAccount = (idx) => {
+      const newAccountStorage = accountStorage.slice();
+      newAccountStorage.splice(idx, 1);
+      setAccountStorage(newAccountStorage);
+    };
+    return accountStorage.map((_, idx) => (
       activeBlock === idx
         ? (
           <button type="button" className="delete remove-account" onClick={() => removeAccount(idx)}>delete</button>
         ) : ''
-    ))
-  ), [accountStorage, activeBlock, removeAccount]);
+    ));
+  }, [accountStorage, activeBlock, setAccountStorage]);
 
-  const accountBlocks = useMemo(() => (
-    accountStorage.map((account, idx) => (
+  const accountBlocks = useMemo(() => {
+    async function handleBlockClick(e, idx) {
+      if (e.target !== e.currentTarget) {
+        return;
+      }
+      if (loading) {
+        return;
+      }
+      setLoading(true);
+      try {
+        const [username, password, region] = accountStorage[idx];
+        const user = await ValorantAPI.login(username, password, region);
+        setUser(user);
+      } catch (err) {
+        setLoading(false);
+      }
+    }
+    return accountStorage.map((account, idx) => (
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events
       <div
         key={account[0]}
@@ -60,8 +58,8 @@ function Accounts(props) {
         )
         {removeButtons[idx]}
       </div>
-    ))
-  ), [accountStorage, removeButtons, handleBlockClick]);
+    ));
+  }, [accountStorage, removeButtons, loading, setUser]);
 
   return (
     <div className="accounts-container">

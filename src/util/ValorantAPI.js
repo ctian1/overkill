@@ -118,13 +118,11 @@ class ValorantAPI {
     if (ValorantAPI.prices === null) {
       const res = await this.request(key, 'GET', this.url('offers', region), authHeaders, {});
       ValorantAPI.prices = {};
-      console.log(res.data);
       res.data.Offers.forEach((offer) => {
         if (offer.Cost['85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741'] !== null) {
           ValorantAPI.prices[offer.OfferID.toLowerCase()] = offer.Cost['85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741'];
         }
       });
-      console.log(ValorantAPI.prices);
     }
   }
 
