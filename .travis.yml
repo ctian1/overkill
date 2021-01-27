@@ -3,7 +3,7 @@ node_js: "12"
 os:
 - linux
 - osx
-dist: trusty
+dist: focal
 osx_image: xcode8.3
 sudo: required
 
@@ -25,8 +25,8 @@ addons:
 #   - sudo apt-get install rpm
 
 install:
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget http://archive.ubuntu.com/ubuntu/pool/universe/r/rpm/rpm_4.16.1.2+dfsg1-0.3_amd64.deb; fi
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo dpkg -i rpm_4.16.1.2+dfsg1-0.3_amd64.deb || sudo apt-get install -f; fi
+# - if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget http://archive.ubuntu.com/ubuntu/pool/universe/r/rpm/rpm_4.16.1.2+dfsg1-0.3_amd64.deb; fi
+# - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo dpkg -i rpm_4.16.1.2+dfsg1-0.3_amd64.deb || sudo apt-get install -f; fi
 - npm install
 
 script:
