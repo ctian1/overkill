@@ -20,13 +20,13 @@ addons:
     - wine
     - mono-devel
 
-# before-install:
-#   - sudo apt-get update
-#   - sudo apt-get install rpm
+before-install:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install rpm=4.14.2.1+dfsg1-1.1; fi
 
 install:
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget http://archive.ubuntu.com/ubuntu/pool/universe/r/rpm/rpm_4.16.1.2+dfsg1-0.3_amd64.deb; fi
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo dpkg -i rpm_4.16.1.2+dfsg1-0.3_amd64.deb || sudo apt-get install -f; fi
+# - if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget http://archive.ubuntu.com/ubuntu/pool/universe/r/rpm/rpm_4.16.1.2+dfsg1-0.3_amd64.deb; fi
+# - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo dpkg -i rpm_4.16.1.2+dfsg1-0.3_amd64.deb || sudo apt-get install -f; fi
 - npm install
 
 script:
