@@ -5,7 +5,7 @@ os:
 - osx
 dist: trusty
 osx_image: xcode8.3
-sudo: false
+sudo: required
 
 cache:
   directories:
@@ -16,9 +16,13 @@ addons:
   apt:
     packages:
     - fakeroot
-    - rpm
+    # - rpm
     - wine
     - mono-devel
+
+before-install:
+  - sudo apt-get update
+  - sudo apt-get install rpm
 
 install:
 - npm install
