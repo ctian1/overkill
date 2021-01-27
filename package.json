@@ -1,6 +1,6 @@
 {
   "name": "overkill",
-  "productName": "overkill",
+  "productName": "Overkill",
   "description": "desktop app for checking VALORANT shop",
   "version": "0.1.0",
   "main": "public/electron.js",
@@ -46,7 +46,6 @@
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.52",
     "@electron-forge/maker-deb": "^6.0.0-beta.52",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.52",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.52",
     "@electron-forge/maker-zip": "^6.0.0-beta.52",
     "@testing-library/jest-dom": "^4.2.4",
@@ -70,14 +69,14 @@
     "forge": {
       "packagerConfig": {
         "icon": "src/icons/mac/icon.icns",
-        "name": "overkill",
-        "executableName": "overkill"
+        "name": "Overkill",
+        "executableName": "Overkill"
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "overkill"
+            "name": "Overkill"
           }
         },
         {
@@ -85,10 +84,6 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
           "config": {}
         }
       ],
