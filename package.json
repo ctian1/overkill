@@ -3,6 +3,7 @@
   "productName": "Overkill",
   "description": "desktop app for checking VALORANT shop",
   "version": "0.1.0",
+  "license": "MIT",
   "main": "public/electron.js",
   "homepage": "./",
   "author": {
@@ -80,9 +81,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "Overkill",
-            "exe": "Overkill.exe",
-            "title": "Overkill"
+            "name": "Overkill"
           },
           "platforms": ["win32", "linux"]
         },
