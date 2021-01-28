@@ -80,7 +80,9 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "Overkill"
+            "name": "Overkill",
+            "exe": "Overkill.exe",
+            "title": "Overkill"
           },
           "platforms": ["win32", "linux"]
         },
