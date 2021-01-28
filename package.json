@@ -76,15 +76,18 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "src/icons/mac/icon.icns",
         "name": "Overkill",
-        "executableName": "Overkill"
+        "executableName": "Overkill",
+        "packageManager": "npm",
+        "asar": true,
+        "prune": true
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "Overkill"
+            "name": "Overkill",
+            "exe": "Overkill.exe"
           }
         },
         {
@@ -96,15 +99,12 @@
         {
           "name": "@electron-forge/maker-deb",
           "config": {
-            "name": "Overkill"
+            "name": "Overkill",
+            "genericName": "Overkill",
+            "productName": "Overkill"
           }
         }
-      ],
-      "electronPackagerConfig": {
-        "packageManager": "npm",
-        "asar": true,
-        "prune": true
-      }
+      ]
     }
   }
 }
