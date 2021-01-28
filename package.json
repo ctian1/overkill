@@ -28,6 +28,9 @@
     "eject": "react-scripts eject",
     "package": "react-scripts build && electron-forge package",
     "make": "react-scripts build && electron-forge make",
+    "make-mac": "react-scripts build && electron-forge make --platform=darwin",
+    "make-linux": "react-scripts build && electron-forge make --platform=linux",
+    "make-win": "react-scripts build && electron-forge make --platform=win32",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
@@ -49,10 +52,10 @@
     ]
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.52",
-    "@electron-forge/maker-deb": "^6.0.0-beta.52",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.52",
-    "@electron-forge/maker-zip": "^6.0.0-beta.52",
+    "@electron-forge/cli": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -82,22 +85,19 @@
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "Overkill"
-          },
-          "platforms": ["win32", "linux"]
+          }
         },
         {
           "name": "@electron-forge/maker-zip",
           "config": {
             "name": "Overkill"
-          },
-          "platforms": ["win32", "darwin", "linux"]
+          }
         },
         {
           "name": "@electron-forge/maker-deb",
           "config": {
             "name": "Overkill"
-          },
-          "platforms": ["linux"]
+          }
         }
       ],
       "electronPackagerConfig": {

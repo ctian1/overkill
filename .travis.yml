@@ -30,7 +30,9 @@ install:
 - npm install
 
 script:
-- npm run make
+- if [ "$TRAVIS_OS_NAME" = "linux" ]; then npm run make-linux; fi
+- if [ "$TRAVIS_OS_NAME" != "osx" ]; then npm run make-win; fi
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then npm run make-mac; fi
 
 deploy:
   provider: releases
