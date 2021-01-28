@@ -40,6 +40,6 @@ deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
   file_glob: true
-  file: out/make/**/*
+  file: out/make/**/*.zip
   skip_cleanup: true
   draft: true
