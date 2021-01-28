@@ -76,30 +76,20 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "name": "Overkill",
-        "executableName": "Overkill",
         "packageManager": "npm",
         "asar": true,
         "prune": true
       },
       "makers": [
         {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "Overkill",
-            "exe": "Overkill.exe"
-          }
+          "name": "@electron-forge/maker-squirrel"
         },
         {
-          "name": "@electron-forge/maker-zip",
-          "config": {
-            "name": "Overkill"
-          }
+          "name": "@electron-forge/maker-zip"
         },
         {
           "name": "@electron-forge/maker-deb",
           "config": {
-            "name": "Overkill",
             "genericName": "Overkill",
             "productName": "Overkill"
           }
