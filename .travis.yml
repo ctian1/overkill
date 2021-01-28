@@ -18,6 +18,7 @@ addons:
     - fakeroot
     # - rpm
     - wine
+    - wine64
     - wine32
     - mono-devel
 
