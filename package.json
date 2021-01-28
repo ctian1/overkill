@@ -1,10 +1,14 @@
 {
-  "name": "Overkill",
+  "name": "overkill",
   "productName": "Overkill",
   "description": "desktop app for checking VALORANT shop",
   "version": "0.1.0",
   "main": "public/electron.js",
   "homepage": "./",
+  "author": {
+    "name": "Chris Tian",
+    "url": "https://chriswtian.com"
+  },
   "private": true,
   "dependencies": {
     "bulma": "^0.9.1",
@@ -77,14 +81,22 @@
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "Overkill"
-          }
+          },
+          "platforms": ["win32", "linux"]
         },
         {
-          "name": "@electron-forge/maker-zip"
+          "name": "@electron-forge/maker-zip",
+          "config": {
+            "name": "Overkill"
+          },
+          "platforms": ["win32", "darwin", "linux"]
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "name": "Overkill"
+          },
+          "platforms": ["linux"]
         }
       ],
       "electronPackagerConfig": {
