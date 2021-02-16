@@ -24,16 +24,19 @@ if (require('electron-squirrel-startup')) {
 
 function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  let options = {
     width: 800,
-    height: 600,
+    height: 535,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
     },
-    titleBarStyle: 'hidden',
     frame: false,
-  });
+  };
+  if (process.platform === 'darwin') {
+    options['titleBarStyle'] = 'hidden';
+  }
+  const win = new BrowserWindow(options);
 
   // and load the index.html of the app.
   win.loadURL(

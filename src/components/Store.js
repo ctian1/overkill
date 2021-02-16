@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import ValorantAPI from '../util/ValorantAPI';
 import Item from './Item';
@@ -10,19 +10,25 @@ function Store(props) {
   const [, setBundle] = useState(null);
   const [items, setItems] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
+  const [storeUpdateMarker, updateStore] = useReducer(n => n+1, 0);
+  const refreshTime = useRef(null);
   const timer = useRef(null);
 
   useEffect(() => {
     const key = `${user.region}#${user.username}`;
 
-    function subtractTime() {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer.current);
-          timer.current = null;
-        }
-        return prev - 1;
-      });
+    function currentTime() {
+      return new Date().getTime() / 1000;
+    }
+
+    function updateTimeLeft() {
+      const newTimeLeft = refreshTime.current - currentTime();
+      if (newTimeLeft <= 0) {
+        updateStore();
+        clearInterval(timer.current);
+        timer.current = null;
+      }
+      setTimeLeft(newTimeLeft);
     }
 
     function parseData(data) {
@@ -31,9 +37,16 @@ function Store(props) {
         items: data.FeaturedBundle.Items,
       });
       setItems(data.SkinsPanelLayout.SingleItemOffers);
-      setTimeLeft(data.SkinsPanelLayout.SingleItemOffersRemainingDurationInSeconds);
+      const secondsLeft = data.SkinsPanelLayout.SingleItemOffersRemainingDurationInSeconds;
+      refreshTime.current = Math.floor(currentTime() + secondsLeft);
 
-      timer.current = setInterval(subtractTime, 1000);
+      updateTimeLeft();
+
+      if (timer.current !== undefined && timer.current !== null) {
+        clearInterval(timer.current);
+      }
+
+      timer.current = setInterval(updateTimeLeft, 1000);
     }
 
     async function getShop() {
@@ -52,7 +65,7 @@ function Store(props) {
         clearInterval(timer.current);
       }
     };
-  }, [user.accessToken, user.entitlementsToken, user.region, user.userId, user.username]);
+  }, [user, storeUpdateMarker]);
 
   function parseTime(seconds) {
     return new Date(seconds * 1000).toISOString().substr(11, 8);

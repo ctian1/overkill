@@ -22,7 +22,7 @@ addons:
     - wine32
     - mono-devel
 
-before-install:
+before_install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install rpm>=4.14; fi
 
@@ -43,3 +43,7 @@ deploy:
   file: out/make/**/*.zip
   skip_cleanup: true
   draft: true
+  overwrite: true
+
+before_cache:
+  - rm -f node_modules/electron-winstaller/vendor/SquirrelSetup.log
