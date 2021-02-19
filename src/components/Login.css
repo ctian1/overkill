@@ -10,3 +10,11 @@ div.select {
 select {
     width: 100%;
 }
+
+.login-main.columns {
+    max-height: 364px;
+}
+
+.accounts.column {
+    overflow-y: auto;
+}

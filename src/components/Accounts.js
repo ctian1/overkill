@@ -23,6 +23,9 @@ function Accounts(props) {
     ));
   }, [accountStorage, activeBlock, setAccountStorage]);
 
+  document.setAccountStorage = setAccountStorage;
+  document.accountStorage = accountStorage;
+
   const accountBlocks = useMemo(() => {
     async function handleBlockClick(e, idx) {
       if (e.target !== e.currentTarget) {

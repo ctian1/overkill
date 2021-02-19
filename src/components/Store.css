@@ -1,3 +1,7 @@
 .store.time-left {
     margin-bottom: 10px;
 }
+
+.store .is-centered {
+    margin: auto;
+}

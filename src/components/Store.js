@@ -1,7 +1,10 @@
-import React, { useEffect, useState, useRef, useReducer } from 'react';
+import React, {
+  useEffect, useState, useRef, useReducer,
+} from 'react';
 import PropTypes from 'prop-types';
 import ValorantAPI from '../util/ValorantAPI';
 import Item from './Item';
+import Loader from './Loader';
 import './Store.css';
 
 function Store(props) {
@@ -10,9 +13,12 @@ function Store(props) {
   const [, setBundle] = useState(null);
   const [items, setItems] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
-  const [storeUpdateMarker, updateStore] = useReducer(n => n+1, 0);
+  const [storeUpdateMarker, updateStore] = useReducer((n) => n + 1, 0);
   const refreshTime = useRef(null);
   const timer = useRef(null);
+
+  document.refreshTime = refreshTime;
+  document.setLoading = setLoading;
 
   useEffect(() => {
     const key = `${user.region}#${user.username}`;
@@ -24,11 +30,12 @@ function Store(props) {
     function updateTimeLeft() {
       const newTimeLeft = refreshTime.current - currentTime();
       if (newTimeLeft <= 0) {
-        updateStore();
         clearInterval(timer.current);
         timer.current = null;
+        setTimeout(updateStore, 500);
+      } else {
+        setTimeLeft(newTimeLeft);
       }
-      setTimeLeft(newTimeLeft);
     }
 
     function parseData(data) {
@@ -49,6 +56,9 @@ function Store(props) {
       timer.current = setInterval(updateTimeLeft, 1000);
     }
 
+    setLoading(true);
+    setBundle(null);
+    setItems(null);
     async function getShop() {
       const authHeaders = {
         Authorization: `Bearer ${user.accessToken}`,
@@ -73,7 +83,14 @@ function Store(props) {
 
   return (
     <div>
-      { loading ? <div>Loading</div>
+      { loading
+        ? (
+          <div className="store column item card">
+            <div className="item card-content">
+              <Loader className="is-centered" />
+            </div>
+          </div>
+        )
         : (
           <div>
             <div className="store time-left">

@@ -37,7 +37,7 @@ function Login(props) {
   }
 
   return (
-    <div>
+    <div className="login">
       <div className="level">
         <div className="level-left">
           <h4 className="title is-4">Login</h4>
@@ -49,7 +49,7 @@ function Login(props) {
         </div>
 
       </div>
-      <div className="columns">
+      <div className="login-main columns">
         <div className="column">
           <form className="login-container box" onSubmit={handleSubmit}>
             <div className="field">
@@ -95,7 +95,7 @@ function Login(props) {
           </form>
         </div>
 
-        <div className="column">
+        <div className="column accounts">
           <Accounts
             accountStorage={accountStorage}
             setAccountStorage={setAccountStorage}
