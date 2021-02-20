@@ -2,7 +2,7 @@
   "name": "overkill",
   "productName": "Overkill",
   "description": "desktop app for checking VALORANT shop",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "license": "MIT",
   "main": "public/electron.js",
   "homepage": "./",
