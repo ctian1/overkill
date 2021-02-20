@@ -1,7 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable no-console */
-/* eslint-disable global-require */
-/* eslint-disable no-param-reassign */
+/* eslint-disable */
 const path = require('path');
 
 const { app, BrowserWindow, session } = require('electron');
