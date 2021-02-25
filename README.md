@@ -12,7 +12,7 @@ Simple desktop app for checking your daily VALORANT shop.
 npm i && npm run dev
 ```
 
-# Screenshots
+## Screenshots
 
 ![login screen](screenshots/login.png)
 
