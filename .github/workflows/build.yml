@@ -1,0 +1,61 @@
+name: Build/release
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macOS-latest, windows-latest, ubuntu-latest]
+
+    steps:
+      - name: Context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: npm install
+        run: |
+          npm install
+      - name: Install apt dependencies
+        if: startsWith(runner.os, 'Linux')
+        run: sudo apt-get install fakeroot wine wine64 mono-devel rpm>=4.14
+      - name: Make Linux
+        if: startsWith(runner.os, 'Linux')
+        run: npm run make-linux
+      - name: Make Windows
+        if: startsWith(runner.os, 'Windows')
+        run: npm run make-win
+      - name: Make macOS
+        if: startsWith(runner.os, 'macOS')
+        run: npm run make-mac
+      - name: Cleanup artifacts
+        if: matrix.os != 'windows-latest'
+        run: |
+          mkdir artifacts
+          mv out/make/**/*.zip artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{matrix.os}}
+          path: artifacts
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          files: "artifacts/**"
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
