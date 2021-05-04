@@ -40,7 +40,10 @@ jobs:
         run: npm ci
       - name: Install apt dependencies
         if: startsWith(runner.os, 'Linux')
-        run: sudo apt-get install fakeroot wine wine64 wine32 mono-devel
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install fakeroot wine wine64 wine32 mono-devel
       - name: Make Linux
         if: startsWith(runner.os, 'Linux')
         run: npm run make-linux
