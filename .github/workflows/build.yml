@@ -56,7 +56,7 @@ jobs:
       - name: Cleanup artifacts
         run: |
           mkdir artifacts
-          mv "out/make/**/*.zip" artifacts
+          find out -name "*.zip" -exec mv "{}" ./artifacts \;
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
@@ -69,3 +69,9 @@ jobs:
           files: "artifacts/**"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      # - name: Setup tmate session
+      #   if: ${{ failure() }}
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     limit-access-to-actor: true
+      #   timeout-minutes: 2
