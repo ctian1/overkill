@@ -27,12 +27,20 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - name: npm install
-        run: |
-          npm install
+      - name: Try npm cache
+        id: npm-cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: npm ci
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
       - name: Install apt dependencies
         if: startsWith(runner.os, 'Linux')
-        run: sudo apt-get install fakeroot wine wine64 mono-devel
+        run: sudo apt-get install fakeroot wine wine64 wine32 mono-devel
       - name: Make Linux
         if: startsWith(runner.os, 'Linux')
         run: npm run make-linux
