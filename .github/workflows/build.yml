@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macOS-latest, windows-latest, ubuntu-latest]
+        os: [macOS-latest, ubuntu-latest]
 
     steps:
       - name: Context
@@ -32,18 +32,17 @@ jobs:
           npm install
       - name: Install apt dependencies
         if: startsWith(runner.os, 'Linux')
-        run: sudo apt-get install fakeroot wine wine64 mono-devel rpm>=4.14
+        run: sudo apt-get install fakeroot wine wine64 mono-devel
       - name: Make Linux
         if: startsWith(runner.os, 'Linux')
         run: npm run make-linux
       - name: Make Windows
-        if: startsWith(runner.os, 'Windows')
+        if: startsWith(runner.os, 'Linux')
         run: npm run make-win
       - name: Make macOS
         if: startsWith(runner.os, 'macOS')
         run: npm run make-mac
       - name: Cleanup artifacts
-        if: matrix.os != 'windows-latest'
         run: |
           mkdir artifacts
           mv out/make/**/*.zip artifacts
