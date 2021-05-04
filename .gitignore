@@ -11,6 +11,7 @@
 # production
 /build
 /out
+/artifacts
 
 # misc
 .DS_Store
