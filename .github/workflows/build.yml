@@ -45,7 +45,7 @@ jobs:
       - name: Cleanup artifacts
         run: |
           mkdir artifacts
-          mv out/make/**/*.zip artifacts
+          mv "out/make/**/*.zip" artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
