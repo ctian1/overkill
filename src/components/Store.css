@@ -1,7 +1,11 @@
-.store.time-left {
-    margin-bottom: 10px;
+.store.top-text {
+    margin-bottom: 15px;
 }
 
 .store .is-centered {
     margin: auto;
+}
+
+.store.riot-id {
+    float: right;
 }

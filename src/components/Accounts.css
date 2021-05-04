@@ -11,8 +11,20 @@
     cursor: pointer;
 }
 
-.panel-block.is-button:hover {
-    background-color: whitesmoke;
+@media (prefers-color-scheme: light) {
+    .panel-block.is-button:hover {
+        background-color: whitesmoke;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .panel-block.is-button:hover {
+        background-color: #363636;
+    }
+    .panel-block {
+        border-top: 1px solid #363636 !important;
+        border-bottom: 1px solid #363636 !important;
+    }
 }
 
 .panel-block.is-loading {
@@ -21,10 +33,15 @@
     padding-bottom: 2em;
 }
 
+.panel-block:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
 button.delete.remove-account {
     background-color: #f14668;
 }
 
-button.delete.remove-account:hover {
-    background-color: #f03a5f !important;
+button.delete.remove-account:focus {
+    outline: -webkit-focus-ring-color auto 1px;
 }

@@ -40,7 +40,7 @@ function Login(props) {
     <div className="login">
       <div className="level">
         <div className="level-left">
-          <h4 className="title is-4">Login</h4>
+          <h4 className="title is-4">Riot Login</h4>
 
         </div>
         <div className="level-right">

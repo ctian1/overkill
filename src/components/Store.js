@@ -6,6 +6,7 @@ import ValorantAPI from '../util/ValorantAPI';
 import Item from './Item';
 import Loader from './Loader';
 import './Store.css';
+import RiotIDText from './RiotIDText';
 
 function Store(props) {
   const { user } = props;
@@ -65,7 +66,7 @@ function Store(props) {
         'X-Riot-Entitlements-JWT': user.entitlementsToken,
       };
 
-      const res = await ValorantAPI.request(key, 'GET', ValorantAPI.url('storefront', user.region, user.userId), authHeaders);
+      const res = await ValorantAPI.request(key, 'GET', ValorantAPI.url('storefront', user.region, user.userID), authHeaders);
       parseData(res.data);
       setLoading(false);
     }
@@ -93,8 +94,9 @@ function Store(props) {
         )
         : (
           <div>
-            <div className="store time-left">
-              {parseTime(timeLeft)}
+            <div className="store top-text">
+              <span>{parseTime(timeLeft)}</span>
+              <RiotIDText className="store riot-id">{user.riotID}</RiotIDText>
             </div>
             {/* <div><img src={`https://media.valorant-api.com/bundles/${bundle.id}/displayicon.png`} /></div> */}
             <div className="columns">
@@ -115,7 +117,8 @@ Store.propTypes = {
     idToken: PropTypes.string.isRequired,
     expiresIn: PropTypes.number.isRequired,
     entitlementsToken: PropTypes.string.isRequired,
-    userId: PropTypes.string.isRequired,
+    userID: PropTypes.string.isRequired,
+    riotID: PropTypes.string.isRequired,
   }).isRequired,
 };
 

@@ -18,7 +18,13 @@ function Accounts(props) {
     return accountStorage.map((_, idx) => (
       activeBlock === idx
         ? (
-          <button type="button" className="delete remove-account" onClick={() => removeAccount(idx)}>delete</button>
+          <button
+            type="button"
+            className="delete remove-account"
+            onClick={() => removeAccount(idx)}
+          >
+            delete
+          </button>
         ) : ''
     ));
   }, [accountStorage, activeBlock, setAccountStorage]);
@@ -26,55 +32,74 @@ function Accounts(props) {
   document.setAccountStorage = setAccountStorage;
   document.accountStorage = accountStorage;
 
-  const accountBlocks = useMemo(() => {
-    async function handleBlockClick(e, idx) {
-      if (e.target !== e.currentTarget) {
-        return;
-      }
-      if (loading) {
-        return;
-      }
-      setLoading(true);
-      try {
-        const [username, password, region] = accountStorage[idx];
-        const user = await ValorantAPI.login(username, password, region);
-        setUser(user);
-      } catch (err) {
-        setLoading(false);
-      }
+  async function login(idx) {
+    if (loading) {
+      return;
     }
-    return accountStorage.map((account, idx) => (
-      // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-      <div
-        key={account[0]}
-        role="menuitem"
-        tabIndex={0}
-        onMouseEnter={() => setActiveBlock(idx)}
-        onMouseLeave={() => setActiveBlock(null)}
-        onClick={(e) => handleBlockClick(e, idx)}
-        className="panel-block is-button is-active"
-      >
-        {account[0]}
-        {' '}
-        (
-        {account[2]}
-        )
-        {removeButtons[idx]}
-      </div>
-    ));
-  }, [accountStorage, removeButtons, loading, setUser]);
+    setLoading(true);
+    try {
+      const [username, password, region] = accountStorage[idx];
+      const user = await ValorantAPI.login(username, password, region);
+      setUser(user);
+    } catch (err) {
+      setLoading(false);
+    }
+  }
+
+  function handleBlockClick(e, idx) {
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+    login(idx);
+  }
+
+  function handleBlockKeyPress(e, idx) {
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+    const enterOrSpace = e.key === 'Enter'
+      || e.key === ' '
+      || e.key === 'Spacebar'
+      || e.which === 13
+      || e.which === 32;
+    if (enterOrSpace) {
+      e.preventDefault();
+      login(idx);
+    }
+  }
+
+  function handleContainerFocus(e) {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setActiveBlock(null);
+    }
+  }
+
+  const accountBlocks = useMemo(() => accountStorage.map((account, idx) => (
+    <div
+      key={account[0]}
+      role="menuitem"
+      tabIndex={0}
+      onMouseEnter={() => setActiveBlock(idx)}
+      onMouseLeave={() => setActiveBlock(null)}
+      onFocus={() => setActiveBlock(idx)}
+      onClick={(e) => handleBlockClick(e, idx)}
+      onKeyPress={(e) => handleBlockKeyPress(e, idx)}
+      className="panel-block is-button"
+    >
+      {account[0]}
+      {' '}
+      (
+      {account[2]}
+      )
+      {removeButtons[idx]}
+    </div>
+  )), [accountStorage, removeButtons, loading, setUser]);
 
   return (
-    <div className="accounts-container">
+    <div className="accounts-container" onBlur={handleContainerFocus}>
       {accountBlocks.length > 0 ? (
         <nav className="panel" style={{ }}>
           { loading ? <div className="panel-block is-loading"><Loader className="is-centered" /></div> : accountBlocks }
-          {/* <a role="menuitem" className="panel-block is-button is-active">
-            pangeacake6
-            <button type="button" className="button is-link is-outlined is-danger is-small">
-              <FontAwesomeIcon icon={faTimes} size="xs" />
-            </button>
-          </a> */}
         </nav>
       ) : ''}
     </div>

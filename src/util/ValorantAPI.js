@@ -82,6 +82,13 @@ class ValorantAPI {
       await this.loadOffers(key, region, authHeaders);
 
       const result4 = await this.request(key, 'POST', this.url('userinfo'), authHeaders, {});
+
+      const userID = result4.data.sub;
+
+      const result5 = await this.request(key, 'PUT', ValorantAPI.url('playerId', region), authHeaders, [userID]);
+
+      const riotID = `${result5.data[0].GameName}#${result5.data[0].TagLine}`;
+
       return {
         username,
         region,
@@ -89,7 +96,8 @@ class ValorantAPI {
         idToken,
         expiresIn,
         entitlementsToken,
-        userId: result4.data.sub,
+        userID,
+        riotID,
       };
     }
     throw new Error();
@@ -140,6 +148,7 @@ ValorantAPI.URLS = {
   storefront: `${ValorantAPI.BASE_URL}/store/v2/storefront/%s`,
   weapons: 'https://valorant-api.com/v1/weapons',
   offers: `${ValorantAPI.BASE_URL}/store/v1/offers`,
+  playerId: `${ValorantAPI.BASE_URL}/name-service/v2/players`,
 };
 
 ValorantAPI.names = null;

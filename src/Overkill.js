@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import Login from './components/Login';
+import Store from './components/Store';
+import ValorantAPI from './util/ValorantAPI';
 // import logo from './logo.svg';
 import './Overkill.css';
 import 'bulma/css/bulma.css';
-import Store from './components/Store';
-import ValorantAPI from './util/ValorantAPI';
+import 'bulma-prefers-dark/css/bulma-prefers-dark.css';
+import SettingsModal from './components/SettingsModal';
 
 function Overkill() {
   const [user, setUser] = useState(null);
+  const [isSettingsOpen, toggleSettings] = useReducer((s) => !s, false);
 
   useEffect(() => {
     ValorantAPI.loadNames();
@@ -23,7 +26,9 @@ function Overkill() {
               <h1 className="title is-3">Overkill</h1>
             </div>
             <div className="column">
-              { user != null ? <button type="button" onClick={() => setUser(null)} className="button is-danger is-light logout">Log out</button> : '' }
+              { user != null
+                ? <button type="button" onClick={() => setUser(null)} className="button is-danger is-light is-pulled-right">Log out</button>
+                : <button type="button" onClick={toggleSettings} className="button is-light is-pulled-right">Settings</button> }
             </div>
           </div>
           {user === null ? <Login setUser={setUser} /> : (
@@ -34,6 +39,7 @@ function Overkill() {
               <Store user={user} />
             </div>
           ) : ''}
+          <SettingsModal open={isSettingsOpen} toggle={toggleSettings} />
         </div>
       </div>
 

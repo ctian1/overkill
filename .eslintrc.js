@@ -16,6 +16,7 @@ module.exports = {
   },
   plugins: [
     'react',
+    'only-warn',
   ],
   rules: {
     // suppress errors for missing 'import React' in files

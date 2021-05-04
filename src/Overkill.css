@@ -40,10 +40,22 @@ html {
   min-width: 600px;
 }
 
-.button.logout {
-  float: right;
-}
-
 .store-container {
   margin-top: 10px;
+}
+
+.modal-background {
+  background-color: rgba(10, 10, 10, 0.86) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .select > select {
+    border-color: #363636 !important;
+    background-color: #0a0a0a !important;
+    color: #dbdbdb !important;
+  }
+
+  .modal-card-body {
+    background-color: #242424 !important;
+  }
 }
