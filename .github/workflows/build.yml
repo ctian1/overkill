@@ -36,7 +36,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: npm ci
-        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Install apt dependencies
         if: startsWith(runner.os, 'Linux')
