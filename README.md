@@ -1,6 +1,6 @@
 # Overkill
 
-[![Build Status](https://travis-ci.com/ctian1/overkill.svg?branch=master)](https://travis-ci.com/ctian1/overkill)
+[![Build Status](https://github.com/ctian1/overkill/actions/workflows/build.yml/badge.svg)](https://github.com/ctian1/overkill/actions/workflows/build.yml)
 
 Simple desktop app for checking your daily VALORANT shop.
 
