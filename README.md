@@ -6,7 +6,9 @@ Simple desktop app for checking your daily VALORANT shop.
 
 (Your account information is only sent directly to Riot servers)
 
-## Setup
+[Download](https://github.com/ctian1/overkill/releases/latest)
+
+## Setup for development
 
 ```sh
 npm i && npm run dev
