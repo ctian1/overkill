@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macOS-latest, ubuntu-latest]
+        os: [macos-11, ubuntu-18.04]
 
     steps:
       - name: Context
