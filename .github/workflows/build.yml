@@ -44,7 +44,7 @@ jobs:
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install fakeroot wine wine64 wine32 mono-devel
+          sudo apt-get install fakeroot libwine:i386 wine wine64 wine32 mono-devel
       - name: Make Linux
         if: startsWith(runner.os, 'Linux')
         run: npm run make-linux
