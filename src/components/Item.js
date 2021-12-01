@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import CurrencyIcon from './CurrencyIcon';
 import './Item.css';
 import ValorantAPI from '../util/ValorantAPI';
 
@@ -8,12 +9,13 @@ function Item(props) {
   return (
     <div className="column item card">
       <div className="item card-image">
-        <img className="skin-icon" src={`https://media.valorant-api.com/weaponskinlevels/${id}/displayicon.png`} alt="weapon skin" />
+        <img className="skin-icon" src={ValorantAPI.url('skinIcon', id)} alt="weapon skin" />
       </div>
       <div className="item card-content">
-        <p className="item price">
-          {ValorantAPI.prices[id]}
-          {' VP'}
+        <p className="item price vertical-align-children">
+          <span>{ValorantAPI.prices[id]}</span>
+          {' '}
+          <CurrencyIcon id={ValorantAPI.CURRENCIES.VP} alt="VALORANT points" />
         </p>
         <p className="item title is-5">{ValorantAPI.names[id]}</p>
       </div>

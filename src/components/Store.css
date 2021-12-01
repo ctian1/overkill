@@ -1,11 +1,15 @@
 .store.top-text {
-    margin-bottom: 15px;
+    margin-bottom: 40px;
 }
 
 .store .is-centered {
     margin: auto;
 }
 
-.store.riot-id {
+.float-right {
     float: right;
+}
+
+.vertical-align-children > * {
+    vertical-align: middle;
 }

@@ -123,15 +123,12 @@ class ValorantAPI {
   }
 
   static async loadOffers(key, region, authHeaders) {
-    if (ValorantAPI.prices === null) {
-      const res = await this.request(key, 'GET', this.url('offers', region), authHeaders, {});
-      ValorantAPI.prices = {};
-      res.data.Offers.forEach((offer) => {
-        if (offer.Cost['85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741'] !== null) {
-          ValorantAPI.prices[offer.OfferID.toLowerCase()] = offer.Cost['85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741'];
-        }
-      });
-    }
+    const res = await this.request(key, 'GET', this.url('offers', region), authHeaders, {});
+    res.data.Offers.forEach((offer) => {
+      if (offer.Cost[ValorantAPI.CURRENCIES.VP] !== null) {
+        ValorantAPI.prices[offer.OfferID.toLowerCase()] = offer.Cost[ValorantAPI.CURRENCIES.VP];
+      }
+    });
   }
 
   static url(name, ...args) {
@@ -139,6 +136,11 @@ class ValorantAPI {
   }
 }
 
+ValorantAPI.CURRENCIES = {
+  VP: '85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741',
+  RP: 'e59aa87c-4cbf-517a-5983-6e81511be9b7',
+  AGENTS: 'f08d4ae3-939c-4576-ab26-09ce1f23bb37',
+};
 ValorantAPI.BASE_URL = 'https://pd.%s.a.pvp.net';
 
 ValorantAPI.URLS = {
@@ -149,10 +151,13 @@ ValorantAPI.URLS = {
   weapons: 'https://valorant-api.com/v1/weapons',
   offers: `${ValorantAPI.BASE_URL}/store/v1/offers`,
   playerId: `${ValorantAPI.BASE_URL}/name-service/v2/players`,
+  wallet: `${ValorantAPI.BASE_URL}/store/v1/wallet/%s`,
+  currencyIcon: 'https://media.valorant-api.com/currencies/%s/displayicon.png',
+  skinIcon: 'https://media.valorant-api.com/weaponskinlevels/%s/displayicon.png',
 };
 
 ValorantAPI.names = null;
-ValorantAPI.prices = null;
+ValorantAPI.prices = {};
 
 window.val = ValorantAPI;
 

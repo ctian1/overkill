@@ -4,6 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import ValorantAPI from '../util/ValorantAPI';
 import Item from './Item';
+import CurrencyIcon from './CurrencyIcon';
 import Loader from './Loader';
 import './Store.css';
 import RiotIDText from './RiotIDText';
@@ -11,7 +12,10 @@ import RiotIDText from './RiotIDText';
 function Store(props) {
   const { user } = props;
   const [loading, setLoading] = useState(true);
+  const [loadingWallet, setLoadingWallet] = useState(true);
   const [, setBundle] = useState(null);
+  const [vp, setVP] = useState(0);
+  const [rp, setRP] = useState(0);
   const [items, setItems] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
   const [storeUpdateMarker, updateStore] = useReducer((n) => n + 1, 0);
@@ -57,19 +61,30 @@ function Store(props) {
       timer.current = setInterval(updateTimeLeft, 1000);
     }
 
+    function parseWalletData(data) {
+      setVP(data.Balances[ValorantAPI.CURRENCIES.VP]);
+      setRP(data.Balances[ValorantAPI.CURRENCIES.RP]);
+    }
+
     setLoading(true);
     setBundle(null);
     setItems(null);
-    async function getShop() {
-      const authHeaders = {
-        Authorization: `Bearer ${user.accessToken}`,
-        'X-Riot-Entitlements-JWT': user.entitlementsToken,
-      };
+    const authHeaders = {
+      Authorization: `Bearer ${user.accessToken}`,
+      'X-Riot-Entitlements-JWT': user.entitlementsToken,
+    };
 
+    async function getWallet() {
+      const res = await ValorantAPI.request(key, 'GET', ValorantAPI.url('wallet', user.region, user.userID), authHeaders);
+      parseWalletData(res.data);
+      setLoadingWallet(false);
+    }
+    async function getShop() {
       const res = await ValorantAPI.request(key, 'GET', ValorantAPI.url('storefront', user.region, user.userID), authHeaders);
       parseData(res.data);
       setLoading(false);
     }
+    getWallet();
     getShop();
     return () => {
       if (timer.current !== undefined && timer.current !== null) {
@@ -84,7 +99,7 @@ function Store(props) {
 
   return (
     <div>
-      { loading
+      { loading || loadingWallet
         ? (
           <div className="store column item card">
             <div className="item card-content">
@@ -95,8 +110,36 @@ function Store(props) {
         : (
           <div>
             <div className="store top-text">
-              <span>{parseTime(timeLeft)}</span>
-              <RiotIDText className="store riot-id">{user.riotID}</RiotIDText>
+              <div>
+                <span className="vertical-align-children">
+                  <span>
+                    {parseTime(timeLeft)}
+                    {' '}
+                  </span>
+                  <span className="float-right vertical-align-children">
+                    <CurrencyIcon id={ValorantAPI.CURRENCIES.VP} alt="VALORANT points" />
+                    <span>
+                      {' '}
+                      {vp}
+                      {' '}
+                    </span>
+                    <CurrencyIcon id={ValorantAPI.CURRENCIES.RP} alt="Radianite points" />
+                    <span>
+                      {' '}
+                      {rp}
+                      {' '}
+                    </span>
+
+                  </span>
+
+                </span>
+
+              </div>
+              <div>
+                <span className="vertical-align-children" />
+                <RiotIDText className="store riot-id float-right">{user.riotID}</RiotIDText>
+
+              </div>
             </div>
             {/* <div><img src={`https://media.valorant-api.com/bundles/${bundle.id}/displayicon.png`} /></div> */}
             <div className="columns">
