@@ -1,6 +1,7 @@
 import util from 'util';
 
 const { net, session } = window.require('electron').remote;
+const { ipcRenderer } = require('electron');
 
 class ValorantAPI {
   static request(key, method, url, headers, data) {

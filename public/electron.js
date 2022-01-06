@@ -1,7 +1,7 @@
 /* eslint-disable */
 const path = require('path');
 
-const { app, BrowserWindow, session } = require('electron');
+const { app, BrowserWindow, session, ipcMain, nativeTheme } = require('electron');
 const isDev = require('electron-is-dev');
 
 // Conditionally include the dev tools installer to load React Dev Tools
@@ -27,6 +27,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      contextIsolation: false,
     },
     frame: false,
   };
@@ -109,3 +110,8 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.handle(
+  'SET_THEME',
+  (event, opts) => nativeTheme.themeSource = opts
+)

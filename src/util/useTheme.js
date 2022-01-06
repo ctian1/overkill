@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import useLocalStorage from './useLocalStorage';
 
-const { nativeTheme } = window.require('electron').remote;
+const { ipcRenderer } = require('electron');
 
 function useTheme() {
   const [theme, set, remove] = useLocalStorage('theme', 'system');
   useEffect(() => {
-    nativeTheme.themeSource = theme;
+    ipcRenderer.invoke('SET_NATIVE_THEME', theme);
   }, [theme]);
   return [theme, set, remove];
 }
